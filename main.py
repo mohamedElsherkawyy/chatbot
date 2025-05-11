@@ -1,6 +1,7 @@
 import json
 import os
 import warnings
+import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
@@ -101,12 +102,14 @@ async def chat(chat: ChatRequest):
 
         parsed_response = response_parser.parse(raw_response)
         print("Parsed response:", parsed_response)
-
+        
+        if user_input.lower() == "quit":
+            parsed_response.message = "Thank you for using the chatbot. Goodbye!"
+            conversation.memory.clear()
         return parsed_response.message
 
     except Exception as e:
         return JSONResponse(status_code=500, content={"error": str(e)})
 
 if __name__ == "__main__":
-    import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8002, reload=True)
