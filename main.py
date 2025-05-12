@@ -42,11 +42,10 @@ chat = ChatGroq(
 )
 conversation = ConversationChain(llm=chat, memory=memory)
 
-# Response schema
 class ChatResponse(BaseModel):
     message: str
 
-# Prompt setup
+
 style = """polite tone that speaks in English, 
 keep the questions direct and concise, asking only for the required details without adding unnecessary conversation."""
 
@@ -98,14 +97,11 @@ async def chat(chat: ChatRequest):
         )
         
         raw_response = conversation.run(input=user_messages[0].content)
-        print("Raw response:", raw_response)
-
         parsed_response = response_parser.parse(raw_response)
-        print("Parsed response:", parsed_response)
         
         if user_input.lower() == "quit":
             parsed_response.message = "Thank you for using Helix. Goodbye!"
-            conversation.memory.clear()
+            conversation.memory.clear()       
         return parsed_response.message
 
     except Exception as e:
