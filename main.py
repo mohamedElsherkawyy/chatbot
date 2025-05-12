@@ -104,7 +104,7 @@ async def chat(chat: ChatRequest):
         print("Parsed response:", parsed_response)
         
         if user_input.lower() == "quit":
-            parsed_response.message = "Thank you for using the chatbot. Goodbye!"
+            parsed_response.message = "Thank you for using Helix. Goodbye!"
             conversation.memory.clear()
         return parsed_response.message
 
